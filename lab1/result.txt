@@ -1,0 +1,6 @@
+Line 1 from file1
+Line 1 from file2
+Line 2 from file1
+Line 2 from file2
+Line 3 from file1
+Line 3 from file2
