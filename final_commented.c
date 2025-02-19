@@ -4,17 +4,14 @@
 #include <ctype.h>          // Include character type checking library (for functions like isalpha, isdigit, isspace, etc.)
 #define MAX_TOKENS 100      // Define maximum number of tokens that can be stored
 #define MAX_ID_LEN 50       // Define maximum length of an identifier (variable name)
-
 typedef struct {              // Structure to store symbol table entries. A symbol table stores information about identifiers.
     int index;              // Index of the symbol in the table (a unique identifier for each symbol)
     char name[MAX_ID_LEN]; // Name of the identifier (e.g., variable name)
     char type[10];         // Data type of the identifier (e.g., "int", "float", "char")
     int size;              // Size of the identifier in memory (e.g., 4 bytes for int, 1 byte for char)
 } Symbol;
-
 Symbol symbolTable[MAX_TOKENS]; // Declare the symbol table as an array of Symbol structures. This array can hold up to MAX_TOKENS symbols.
 int symbolCount = 0;          // Initialize the count of symbols currently in the symbol table to 0.
-
 int lookupSymbol(char *name) { // Function to check if an identifier (symbol) with the given name already exists in the symbol table.
     for (int i = 0; i < symbolCount; i++) { // Iterate through the existing symbols in the symbol table.
         if (strcmp(symbolTable[i].name, name) == 0) { // Compare the given name with the name of the current symbol.
@@ -23,7 +20,6 @@ int lookupSymbol(char *name) { // Function to check if an identifier (symbol) wi
     }
     return -1; // If the given name is not found in the symbol table, return -1.
 }
-
 int insertSymbol(char *name, char *type, int size) { // Function to insert a new identifier (symbol) into the symbol table.
     int index = lookupSymbol(name); // Check if the symbol already exists.
     if (index == -1) { // If the symbol doesn't exist.
@@ -36,7 +32,6 @@ int insertSymbol(char *name, char *type, int size) { // Function to insert a new
     }
     return index; // If the symbol already exists, return its existing index.
 }
-
 // Function to check if a given string is a keyword.
 int isKeyword(const char *str) {
     char *keywords[] = { // Array of keywords.
@@ -50,15 +45,12 @@ int isKeyword(const char *str) {
     }
     return 0; // If it's not a keyword, return 0 (false).
 }
-
 // Function to get the next token from the input file.
 void getNextToken(FILE *fp) {
     char ch, buffer[MAX_ID_LEN]; // Character 'ch' to store the current character read, 'buffer' to store the current token being built.
     int line = 1, col = 0, tokenIndex = 1; // 'line' and 'col' to track the line and column number, 'tokenIndex' to assign a unique index to each token.
-
     while ((ch = fgetc(fp)) != EOF) { // Read characters from the file one by one until the end of file (EOF) is reached.
         col++; // Increment the column number.
-
         // Handle preprocessor directives (e.g., #include <...>)
         if(ch == '#') { // Check if it is a preprocessor directive
             int i = 0;
@@ -74,7 +66,6 @@ void getNextToken(FILE *fp) {
             }
             continue; // continue to the next character
         }
-
         if (isspace(ch)) { // Check if the character is a whitespace character (space, tab, newline, etc.).
             if (ch == '\n') { // If it's a newline character.
                 line++; // Increment the line number.
@@ -82,7 +73,6 @@ void getNextToken(FILE *fp) {
             }
             continue; // Skip whitespace characters and proceed to the next character.
         }
-
         // Handle character literals (e.g., 'x')
         if(ch == '\'') { // Check if it is a character literal
             int i = 0;
@@ -95,7 +85,6 @@ void getNextToken(FILE *fp) {
             printf("%d. < Character , %d , %d, %s>\n", tokenIndex++, line, col, buffer); // print the token information
             continue; // continue to the next character
         }
-
         // Handle identifiers and keywords.
         if (isalpha(ch) || ch == '_') { // Check if the character is an alphabet or an underscore (start of an identifier).
             int i = 0;
@@ -183,9 +172,7 @@ void getNextToken(FILE *fp) {
         }
     }
 }
-
-// Function to print the symbol table.
-void printSymbolTable() {
+void printSymbolTable() {// Function to print the symbol table.
     printf("\nSymbol Table:\n");
     printf("Index    Name     Type     Size\n");
     printf("-----    ----     ----     ----\n");
@@ -197,7 +184,6 @@ void printSymbolTable() {
                symbolTable[i].size);
     }
 }
-
 int main(int argc, char *argv[]) { // Main function of the program.
     if (argc < 2) { // Check if a filename is provided as a command-line argument.
         printf("Usage: %s <filename>\n", argv[0]); // Print usage instructions.
